@@ -1,0 +1,26 @@
+<!--
+  ~ Copyleft (c) 2014. This code is for learning purposes only. Do whatever you like with it but don't take it as perfect code.
+  -->
+
+<suite name="TRP Parallel classes Suite" parallel="methods" thread-count="10" verbose="10">
+    <listeners>
+            <listener class-name="ch.racic.trp.testng.listener.TrpSuiteListener" />
+            <listener class-name="ch.racic.trp.testng.listener.TrpTestListener" />
+            <listener class-name="ch.racic.trp.testng.listener.TrpInvokedMethodListener" />
+            <listener class-name="ch.racic.trp.testng.listener.TrpReporter" />
+            <listener class-name="ch.racic.trp.testng.listener.TrpAnnotationTransformer" />
+            <listener class-name="ch.racic.trp.testng.listener.TrpMethodInterceptor" />
+          </listeners>
+    <test name="Try 1">
+        <classes>
+            <class name="ch.racic.trp.samples.SampleTest"/>
+            <class name="ch.racic.trp.samples.SampleTest2"/>
+        </classes>
+    </test>
+    <test name="Try 2">
+        <classes>
+            <class name="ch.racic.trp.samples.SampleTest"/>
+            <class name="ch.racic.trp.samples.SampleTest2"/>
+        </classes>
+    </test>
+</suite>
