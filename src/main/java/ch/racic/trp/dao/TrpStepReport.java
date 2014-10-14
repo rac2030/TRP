@@ -45,6 +45,6 @@ public class TrpStepReport extends AbstractReportElement implements ITestReportE
     }
 
     public ITestReportEntry getCurrentActiveStep() {
-        return isInProgress()?this:null;
+        return isInProgress() ? this : null;
     }
 }

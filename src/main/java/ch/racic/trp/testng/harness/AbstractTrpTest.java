@@ -4,10 +4,6 @@
 
 package ch.racic.trp.testng.harness;
 
-import ch.racic.trp.dao.TrpTestClassReport;
-import ch.racic.trp.dao.TrpTestNGSuiteReport;
-import ch.racic.trp.dao.TrpTestNGTestReport;
-import ch.racic.trp.testng.listener.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.ITestContext;
@@ -27,13 +23,6 @@ public abstract class AbstractTrpTest {
     //@BeforeClass
     public void trpBeforeClass(ITestContext iTestContext) {
         log.entry(iTestContext);
-        TrpTestNGSuiteReport suiteReport = ((TrpTestNGSuiteReport) iTestContext.getSuite().getAttribute(TrpSuiteListener.SUITE_REPORT_KEY));
-        log.debug(suiteReport.get(iTestContext.getName()));
-        String classIdentifier = this.getClass().getName();
-        TrpTestNGTestReport currentTest = suiteReport.get(iTestContext.getName());
-        if (currentTest.get(classIdentifier) == null) {
-            currentTest.add(new TrpTestClassReport(classIdentifier));
-        }
     }
 
     @AfterClass

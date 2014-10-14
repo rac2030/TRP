@@ -2,8 +2,13 @@
  * Copyleft (c) 2014. This code is for learning purposes only. Do whatever you like with it but don't take it as perfect code.
  */
 
+/*
+ * Copyleft (c) 2014. This code is for learning purposes only. Do whatever you like with it but don't take it as perfect code.
+ */
+
 package ch.racic.trp.testng.listener;
 
+import ch.racic.trp.testng.Reporter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.IInvokedMethod;
@@ -20,6 +25,7 @@ public class TrpInvokedMethodListener implements IInvokedMethodListener2 {
 
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult, ITestContext iTestContext) {
         log.entry(iInvokedMethod, iTestResult, iTestContext);
+        Reporter.setCurrentTestResult(iTestResult);
     }
 
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult, ITestContext iTestContext) {

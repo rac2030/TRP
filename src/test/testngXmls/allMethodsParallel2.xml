@@ -3,11 +3,7 @@
   -->
 
 <suite name="TRP Parallel classes Suite" parallel="methods" thread-count="10" verbose="10">
-    <listeners>
-        <listener class-name="ch.racic.trp.testng.listener2.TrpReporter"/>
-        <listener class-name="ch.racic.trp.testng.listener2.TrpInvokedMethodListener"/>
-        <listener class-name="ch.racic.trp.testng.listener2.TrpTestListener"/>
-    </listeners>
+
     <test name="Try 1">
         <classes>
             <class name="ch.racic.trp.samples.SampleTest"/>

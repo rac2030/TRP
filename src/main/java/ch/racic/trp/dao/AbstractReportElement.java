@@ -4,7 +4,6 @@
 
 package ch.racic.trp.dao;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.apache.logging.log4j.LogManager;
@@ -37,12 +36,12 @@ public abstract class AbstractReportElement implements ITestReportEntry {
     }
 
     public String getDescription() {
-            return description;
-        }
+        return description;
+    }
 
     public void setDescription(String description) {
-            this.description = description;
-        }
+        this.description = description;
+    }
 
     public String getName() {
         return name;

@@ -4,12 +4,15 @@
 
 package ch.racic.trp.dao;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by rac on 24.09.14.
  */
+@XStreamAlias("group")
 public class TrpGroupReport extends AbstractReportElement implements ITestReportEntry {
     private List<ITestReportEntry> entries = new ArrayList<ITestReportEntry>();
 
@@ -43,15 +46,15 @@ public class TrpGroupReport extends AbstractReportElement implements ITestReport
     }
 
     public synchronized ITestReportEntry getCurrentActiveStep() {
-        if(!isInProgress()) {
+        if (!isInProgress()) {
             // We reached a dead end as this node is not anymore in progress
             return null;
-        } else if(entries.isEmpty()) {
+        } else if (entries.isEmpty()) {
             // This is in progress but we don't have any childs yet
             return this;
         }
         // check if the last child is active
-        ITestReportEntry ret = entries.get(entries.size()-1);
+        ITestReportEntry ret = entries.get(entries.size() - 1);
         return ret.getCurrentActiveStep();
     }
 }

@@ -10,9 +10,7 @@ package ch.racic.trp.samples;
 
 import ch.racic.trp.annotations.TRPGroup;
 import ch.racic.trp.dao.TrpStepReport;
-import ch.racic.trp.dao.TrpTestMethodReport;
 import ch.racic.trp.testng.Reporter;
-import ch.racic.trp.testng.guicemodule.TestStepInterceptor;
 import ch.racic.trp.testng.harness.AbstractTrpTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +24,6 @@ import java.lang.reflect.Method;
 /**
  * Created by rac on 22.09.14.
  */
-@Guice(moduleFactory = TestStepInterceptor.class)
 public class SampleTest2 extends AbstractTrpTest {
 
     private static final Logger log = LogManager.getLogger(SampleTest2.class);
@@ -94,17 +91,13 @@ public class SampleTest2 extends AbstractTrpTest {
     @Test(testName = "ding dong 1")
     public void test1(ITestContext iTestContext) {
         log.entry(iTestContext);
-        TrpTestMethodReport stepReporter = (TrpTestMethodReport) iTestContext.getAttribute("teststepreporter");
-        //stepReporter.add(new TrpStepReport("Sample step in ding dong 1"));
         Reporter.log("Sample log in ding dong 1");
     }
 
     @Test(groups = "TestGroup", suiteName = "test2 suite")
     public void test2(ITestContext iTestContext) {
         log.entry(iTestContext);
-        TrpTestMethodReport stepReporter = (TrpTestMethodReport) iTestContext.getAttribute("teststepreporter");
-        //stepReporter.add(new TrpStepReport("Sample step in test2"));
-        Reporter.log(new TrpStepReport("logstep","Sample step in test2"));
+        Reporter.log(new TrpStepReport("logstep", "Sample step in test2"));
 
     }
 

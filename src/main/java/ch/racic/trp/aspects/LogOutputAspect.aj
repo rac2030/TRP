@@ -5,7 +5,6 @@
 package ch.racic.trp.aspects;
 
 import ch.racic.trp.testng.Reporter;
-import com.google.common.base.Joiner;
 
 /**
  * Created by rac on 10.10.14.
@@ -23,16 +22,16 @@ public aspect LogOutputAspect {
     }
 
     pointcut log4jwarn():call(* org.apache.logging.log4j.Logger.warn(..)) && !within(ch.racic.trp.aspects.*);
-        after():log4jwarn(){
-            Reporter.log("log4jwarn:" + (String) thisJoinPoint.getArgs()[0], false);
+    after():log4jwarn(){
+        Reporter.log("log4jwarn:" + (String) thisJoinPoint.getArgs()[0], false);
 
-        }
+    }
 
     pointcut log4jerror():call(* org.apache.logging.log4j.Logger.error(..)) && !within(ch.racic.trp.aspects.*);
-            after():log4jerror(){
-                Reporter.log("log4jerror:" + (String) thisJoinPoint.getArgs()[0], false);
+    after():log4jerror(){
+        Reporter.log("log4jerror:" + (String) thisJoinPoint.getArgs()[0], false);
 
-            }
+    }
 
 
 

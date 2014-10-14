@@ -6,7 +6,6 @@ package ch.racic.trp.samples;
 
 import ch.racic.trp.annotations.TRPGroup;
 import ch.racic.trp.testng.harness.AbstractTrpTest;
-import ch.racic.trp.testng.listener.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
@@ -110,6 +109,7 @@ public class SampleTest extends AbstractTrpTest {
     @Test
     public void test5(ITestContext iTestContext) {
         log.entry(iTestContext);
+        log.info("Starting test5");
         dummyStep();
         Assert.fail();
 

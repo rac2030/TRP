@@ -4,13 +4,13 @@
 
 <suite name="TRP Parallel classes Suite" parallel="methods" thread-count="10" verbose="10">
     <listeners>
-            <listener class-name="ch.racic.trp.testng.listener.TrpSuiteListener" />
-            <listener class-name="ch.racic.trp.testng.listener.TrpTestListener" />
-            <listener class-name="ch.racic.trp.testng.listener.TrpInvokedMethodListener" />
-            <listener class-name="ch.racic.trp.testng.listener.TrpReporter" />
-            <listener class-name="ch.racic.trp.testng.listener.TrpAnnotationTransformer" />
-            <listener class-name="ch.racic.trp.testng.listener.TrpMethodInterceptor" />
-          </listeners>
+        <listener class-name="ch.racic.trp.testng.listenerAll.TrpSuiteListener"/>
+        <listener class-name="ch.racic.trp.testng.listenerAll.TrpTestListener"/>
+        <listener class-name="ch.racic.trp.testng.listenerAll.TrpInvokedMethodListener"/>
+        <listener class-name="ch.racic.trp.testng.listenerAll.TrpReporter"/>
+        <listener class-name="ch.racic.trp.testng.listenerAll.TrpAnnotationTransformer"/>
+        <listener class-name="ch.racic.trp.testng.listenerAll.TrpMethodInterceptor"/>
+    </listeners>
     <test name="Try 1">
         <classes>
             <class name="ch.racic.trp.samples.SampleTest"/>

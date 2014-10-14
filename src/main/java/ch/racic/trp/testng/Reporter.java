@@ -7,7 +7,7 @@ package ch.racic.trp.testng;
 import ch.racic.trp.dao.ITestReportEntry;
 import ch.racic.trp.dao.TrpGroupReport;
 import ch.racic.trp.dao.TrpStepReport;
-import ch.racic.trp.testng.listener2.TrpTestListener;
+import ch.racic.trp.testng.listener.TrpTestListener;
 import org.testng.ITestResult;
 import org.testng.TestRunner;
 import org.testng.collections.Lists;
@@ -65,14 +65,16 @@ public class Reporter {
             s = Strings.escapeHtml(s);
         }
         ITestReportEntry testReportRoot = (ITestReportEntry) m.getAttribute(TrpTestListener.TEST_STEP_REPORT_KEY);
+        if (testReportRoot == null)
+            return;
         ITestReportEntry activeStep = testReportRoot.getCurrentActiveStep();
-        if(activeStep instanceof TrpStepReport) {
+        if (activeStep instanceof TrpStepReport) {
             // We are inside a step, add it to log?
-            ((TrpStepReport)activeStep).appendLog(s);
-        } else if(activeStep instanceof TrpGroupReport) {
+            ((TrpStepReport) activeStep).appendLog(s);
+        } else if (activeStep instanceof TrpGroupReport) {
             // We are in a group but outside a step
             // Add a log step
-            ((TrpGroupReport)activeStep).add(new TrpStepReport("LOG", s).start().finish());
+            ((TrpGroupReport) activeStep).add(new TrpStepReport("LOG", s).start().finish());
         }
         // synchronization needed to ensure the line number and m_output are updated atomically
         /*int n = getOutput().size();
@@ -95,7 +97,7 @@ public class Reporter {
     }
 
     public static void log(TrpStepReport step) {
-        log("step["+step.getName()+", "+ step.getDescription() +"]", getCurrentTestResult());
+        log("step[" + step.getName() + ", " + step.getDescription() + "]", getCurrentTestResult());
     }
 
     /**

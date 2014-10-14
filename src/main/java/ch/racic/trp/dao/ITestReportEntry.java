@@ -4,10 +4,15 @@
 
 package ch.racic.trp.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by rac on 24.09.14.
  */
 public interface ITestReportEntry {
+
+    List<ITestReportEntry> entries = new ArrayList<ITestReportEntry>();
 
     public String getName();
 
