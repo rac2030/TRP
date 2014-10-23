@@ -25,7 +25,7 @@ public class SampleTest extends AbstractTrpTest {
     @BeforeClass
     public void beforeClass(ITestContext iTestContext) {
         log.entry(iTestContext);
-
+        dummyStep2("before class");
     }
 
     @AfterClass
@@ -106,18 +106,26 @@ public class SampleTest extends AbstractTrpTest {
 
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = ".*Failed2.*")
     public void test5(ITestContext iTestContext) {
         log.entry(iTestContext);
         log.info("Starting test5");
         dummyStep();
-        Assert.fail();
+        log.info("After dummy step");
+        dummyStep2("after dummyStep()");
 
     }
 
     @TRPGroup("Dummy steps")
-    private void dummyStep() {
+    public void dummyStep() {
         log.info("Dummy log");
+        dummyStep2("inside dummyStep()");
+        Assert.fail("Failed in dummy step");
+    }
+
+    @TRPGroup("Dummy steps 2")
+    public void dummyStep2(String txt) {
+        log.info("Dummy log 2 - " + txt);
     }
 
 }

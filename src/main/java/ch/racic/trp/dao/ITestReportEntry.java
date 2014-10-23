@@ -4,15 +4,12 @@
 
 package ch.racic.trp.dao;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.testng.ITestResult;
 
 /**
  * Created by rac on 24.09.14.
  */
 public interface ITestReportEntry {
-
-    List<ITestReportEntry> entries = new ArrayList<ITestReportEntry>();
 
     public String getName();
 
@@ -28,8 +25,33 @@ public interface ITestReportEntry {
 
     public ITestReportEntry start();
 
-    public ITestReportEntry finish();
+    /**
+     * @param result can be null
+     * @return
+     */
+    public ITestReportEntry finish(ITestResult result);
 
     public ITestReportEntry getCurrentActiveStep();
 
+    public String getTestClass();
+
+    public ITestReportEntry setTestClass(String clazz);
+
+    public String getTestMethod();
+
+    public ITestReportEntry setTestMethod(String method);
+
+    public String getTestInstance();
+
+    public ITestReportEntry setTestInstance(String instanceIdentifier);
+
+    public String getThreadId();
+
+    public ITestReportEntry setThreadId(String threadId);
+
+    public Throwable getThrowable();
+
+    public ITestReportEntry setThrowable(Throwable throwable);
+
+    public ITestReportEntry setExpectedExceptions(Class[] classes, String messageRegex);
 }

@@ -55,6 +55,9 @@ public class TrpGroupReport extends AbstractReportElement implements ITestReport
         }
         // check if the last child is active
         ITestReportEntry ret = entries.get(entries.size() - 1);
+        if (!ret.isInProgress()) {
+            return this;
+        }
         return ret.getCurrentActiveStep();
     }
 }

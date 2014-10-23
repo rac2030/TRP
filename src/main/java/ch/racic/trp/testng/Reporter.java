@@ -36,10 +36,6 @@ public class Reporter {
 
     private static boolean m_escapeHtml = false;
 
-    public static void setCurrentTestResult(ITestResult m) {
-        m_currentTestResult.set(m);
-    }
-
     public static List<String> getOutput() {
         return m_output;
     }
@@ -74,7 +70,7 @@ public class Reporter {
         } else if (activeStep instanceof TrpGroupReport) {
             // We are in a group but outside a step
             // Add a log step
-            ((TrpGroupReport) activeStep).add(new TrpStepReport("LOG", s).start().finish());
+            ((TrpGroupReport) activeStep).add(new TrpStepReport("LOG", s).start().finish(null));
         }
         // synchronization needed to ensure the line number and m_output are updated atomically
         /*int n = getOutput().size();
@@ -96,8 +92,20 @@ public class Reporter {
         log(s, getCurrentTestResult());
     }
 
-    public static void log(TrpStepReport step) {
-        log("step[" + step.getName() + ", " + step.getDescription() + "]", getCurrentTestResult());
+    public static void log(ITestReportEntry step) {
+        //log("step[" + step.getName() + ", " + step.getDescription() + "]", getCurrentTestResult());
+        ITestReportEntry testReportRoot = (ITestReportEntry) getCurrentTestResult().getAttribute(TrpTestListener.TEST_STEP_REPORT_KEY);
+        if (testReportRoot == null)
+            return;
+        ITestReportEntry activeStep = testReportRoot.getCurrentActiveStep();
+        if (activeStep instanceof TrpStepReport) {
+            // We are inside a step, what to do, this should not happen?
+            System.err.println("reporter error, a step is active but we are in a new step");
+        } else if (activeStep instanceof TrpGroupReport) {
+            // We are in a group but outside a step
+            // Add a log step
+            ((TrpGroupReport) activeStep).add(step);
+        }
     }
 
     /**
@@ -149,6 +157,10 @@ public class Reporter {
      */
     public static ITestResult getCurrentTestResult() {
         return m_currentTestResult.get();
+    }
+
+    public static void setCurrentTestResult(ITestResult m) {
+        m_currentTestResult.set(m);
     }
 
     public static synchronized List<String> getOutput(ITestResult tr) {

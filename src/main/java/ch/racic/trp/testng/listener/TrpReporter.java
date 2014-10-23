@@ -41,10 +41,11 @@ public class TrpReporter implements IReporter {
                 );
                 for (ITestResult ires : allResults) {
                     TrpGroupReport testReportRoot = ((TrpGroupReport) ires.getAttribute(TrpTestListener.TEST_STEP_REPORT_KEY));
-                    log.info("[" + testReportRoot.getName() + "]");
-                    XStream stream = new XStream();
-                    stream.autodetectAnnotations(true);
-                    log.info(stream.toXML(testReportRoot));
+                    if (testReportRoot != null) {
+                        XStream stream = new XStream();
+                        stream.autodetectAnnotations(true);
+                        log.info("\n" + stream.toXML(testReportRoot));
+                    }
                     /**
                      log.info("Log: " + Joiner.on("; ").skipNulls().join(ch.racic.trp.testng.Reporter.getOutput(ires)));
                      log.info("Steps:");
@@ -52,7 +53,7 @@ public class TrpReporter implements IReporter {
                      log.info("\tStep name: " + re.getName());
                      log.info("\tStep desc: " + re.getDescription());
                      if(re instanceof TrpStepReport)
-                     log.info("\t\tStep logs: " + ((TrpStepReport)re).getLog());
+                     log.info("\t\tStep logs: " + ((TrpStepReport)re).getTestLog());
                      }
                      **/
 

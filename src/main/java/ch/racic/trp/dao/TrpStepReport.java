@@ -13,7 +13,7 @@ import java.io.File;
  */
 @XStreamAlias("step")
 public class TrpStepReport extends AbstractReportElement implements ITestReportEntry {
-    private String log = "";
+
     private File response;
 
     public TrpStepReport(String name) {
@@ -22,18 +22,6 @@ public class TrpStepReport extends AbstractReportElement implements ITestReportE
 
     public TrpStepReport(String name, String description) {
         super(name, description);
-    }
-
-    public String getLog() {
-        return log;
-    }
-
-    public void setLog(String log) {
-        this.log = log;
-    }
-
-    public void appendLog(String log) {
-        this.log += "***[" + log + "]***";
     }
 
     public File getResponse() {

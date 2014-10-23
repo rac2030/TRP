@@ -17,7 +17,11 @@ public aspect LogOutputAspect {
 
     pointcut log4jinfo():call(* org.apache.logging.log4j.Logger.info(..)) && !within(ch.racic.trp.aspects.*);
     after():log4jinfo(){
-        Reporter.log("log4jinfo:" + (String) thisJoinPoint.getArgs()[0], false);
+        try {
+            Reporter.log("log4jinfo:" + (String) thisJoinPoint.getArgs()[0], false);
+        } catch (NoSuchMethodError e) {
+            e.printStackTrace();
+        }
 
     }
 

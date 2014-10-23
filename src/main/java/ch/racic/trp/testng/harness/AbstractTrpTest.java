@@ -20,7 +20,7 @@ public abstract class AbstractTrpTest {
 
     private static final Logger log = LogManager.getLogger(AbstractTrpTest.class);
 
-    //@BeforeClass
+    @BeforeClass
     public void trpBeforeClass(ITestContext iTestContext) {
         log.entry(iTestContext);
     }

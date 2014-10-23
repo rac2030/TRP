@@ -23,6 +23,7 @@ public class TrpInvokedMethodListener implements IInvokedMethodListener2 {
 
     private static final Logger log = LogManager.getLogger(TrpInvokedMethodListener.class);
 
+
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult, ITestContext iTestContext) {
         log.entry(iInvokedMethod, iTestResult, iTestContext);
         Reporter.setCurrentTestResult(iTestResult);
@@ -34,6 +35,8 @@ public class TrpInvokedMethodListener implements IInvokedMethodListener2 {
 
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         log.entry(iInvokedMethod, iTestResult);
+        Reporter.setCurrentTestResult(iTestResult);
+
     }
 
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {

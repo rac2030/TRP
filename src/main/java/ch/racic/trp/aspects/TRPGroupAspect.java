@@ -5,6 +5,7 @@
 package ch.racic.trp.aspects;
 
 import ch.racic.trp.annotations.TRPGroup;
+import ch.racic.trp.dao.TrpGroupReport;
 import ch.racic.trp.testng.Reporter;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,23 +18,26 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class TRPGroupAspect {
     @Pointcut(value = "execution(public * *(..))")
-    public void anyPublicMethod() {
+    public void anyMethod() {
     }
 
-    @Around("anyPublicMethod() && @annotation(group)")
+    @Around("anyMethod() && @annotation(group)")
     public Object groupWrapper(ProceedingJoinPoint pjp, TRPGroup group) throws Throwable {
-        Reporter.log("Starting group " + group.value());
+        TrpGroupReport groupReport = new TrpGroupReport(group.value());
+        Reporter.log(groupReport.start());
 
         // Do what you want with the join point arguments
-        for (Object object : pjp.getArgs()) {
-            System.out.println(object);
-        }
+            /*for (Object object : pjp.getArgs()) {
+                System.out.println(object);
+            }*/
         Object ret;
         try {
             ret = pjp.proceed();
+        } catch (Exception e) {
+            groupReport.setThrowable(e);
+            throw e;
         } finally {
-
-            Reporter.log("Finished group " + group.value());
+            groupReport.finish(null);
         }
         return ret;
 
