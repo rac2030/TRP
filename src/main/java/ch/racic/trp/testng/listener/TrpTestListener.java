@@ -17,16 +17,23 @@ import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 /**
  * Created by rac on 22.09.14.
  */
 public class TrpTestListener extends TestListenerAdapter {
 
     public static final String TEST_STEP_REPORT_KEY = "current.trp.test.step.report";
+    public static final String TEST_METHOD_OUTPUT_LOCATION_KEY = "current.trp.test.method.output.location";
     private static final Logger log = LogManager.getLogger(TrpTestListener.class);
+    private static int testMethodCounter = 0;
+    private static int testConfigurationCounter = 0;
 
     public void onStart(ITestContext iTestContext) {
         log.entry(iTestContext);
+        String out = iTestContext.getOutputDirectory();
+        log.info(out);
     }
 
     @Override
@@ -37,8 +44,13 @@ public class TrpTestListener extends TestListenerAdapter {
         if (testName == null || testName.trim().equals(""))
             testName = iTestResult.getName();
         ITestReportEntry rootGroup = new TrpGroupReport(testName).setSourceReference(iTestResult);
+        File testMethodOutRoot = new File(iTestResult.getTestContext().getOutputDirectory(), "configurations/" + String.format("%04d", ++testConfigurationCounter) + "-" + rootGroup.getTestInstance() + "." + rootGroup.getTestMethod());
+        testMethodOutRoot.mkdirs();
+        //save it in context
+        iTestResult.setAttribute(TEST_METHOD_OUTPUT_LOCATION_KEY, testMethodOutRoot);
         rootGroup.start();
         iTestResult.setAttribute(TEST_STEP_REPORT_KEY, rootGroup);
+
     }
 
     @Override
@@ -68,6 +80,11 @@ public class TrpTestListener extends TestListenerAdapter {
         String testName = testAnnotation.testName();
         if (testName == null || testName.trim().equals(""))
             testName = iTestResult.getName();
+        File testMethodOutRoot = new File(iTestResult.getTestContext().getOutputDirectory(), String.format("%04d", ++testMethodCounter) + "-" + testName);
+        testMethodOutRoot.mkdirs();
+        // save it in context
+        iTestResult.setAttribute(TEST_METHOD_OUTPUT_LOCATION_KEY, testMethodOutRoot);
+        //TODO do I need it in context or can I just set it in the root group?
         ITestReportEntry rootGroup = new TrpGroupReport(testName)
                 .setSourceReference(iTestResult)
                 .setExpectedExceptions(testAnnotation.expectedExceptions(), testAnnotation.expectedExceptionsMessageRegExp())
@@ -98,6 +115,24 @@ public class TrpTestListener extends TestListenerAdapter {
         log.entry(iTestResult);
         TrpGroupReport rootGroup = (TrpGroupReport) iTestResult.getAttribute(TEST_STEP_REPORT_KEY);
         rootGroup.finish(iTestResult);
+    }
+
+    private void startTestMethodLog() {
+        //TODO how?
+        //LogManager.getRootLogger();
+        /**
+         FileAppender testlog = FileAppender.createAppender();
+         FileAppender fa = new FileAppender();
+         fa.setName("FileLogger");
+         fa.setFile("mylog.log");
+         fa.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
+         fa.setThreshold(Level.DEBUG);
+         fa.setAppend(true);
+         fa.activateOptions();
+
+         //add appender to any Logger (here is root)
+         Logger.getRootLogger().addAppender(fa)
+         **/
     }
 
 

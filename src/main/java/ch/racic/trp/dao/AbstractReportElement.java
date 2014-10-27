@@ -9,6 +9,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.IClass;
+import org.testng.ISuite;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
@@ -250,7 +251,13 @@ public abstract class AbstractReportElement implements ITestReportEntry {
         String name = iTestResult.getName();
         String testName = iTestResult.getTestName();
         IClass testClass = iTestResult.getTestClass();
+        String suiteName = null;
+        ISuite suite = iTestResult.getTestContext().getSuite();
+        if (suite != null) {
+            suiteName = suite.getName();
+        }
 
+        log.debug("Suite = " + suiteName);
 
         log.debug(host + instance + attributeNames + parameters + name + testName + testClass);
 
