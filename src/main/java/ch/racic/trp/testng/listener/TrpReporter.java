@@ -8,9 +8,7 @@
 
 package ch.racic.trp.testng.listener;
 
-import ch.racic.trp.dao.TrpGroupReport;
 import com.google.common.collect.Iterables;
-import com.thoughtworks.xstream.XStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.*;
@@ -40,12 +38,12 @@ public class TrpReporter implements IReporter {
                         ctx.getSkippedTests().getAllResults()
                 );
                 for (ITestResult ires : allResults) {
-                    TrpGroupReport testReportRoot = ((TrpGroupReport) ires.getAttribute(TrpTestListener.TEST_STEP_REPORT_KEY));
+                    /*TrpGroupReport testReportRoot = ((TrpGroupReport) ires.getAttribute(TrpTestListener.TEST_STEP_REPORT_KEY));
                     if (testReportRoot != null) {
                         XStream stream = new XStream();
                         stream.autodetectAnnotations(true);
                         log.info("\n" + stream.toXML(testReportRoot));
-                    }
+                    }*/
                     /**
                      log.info("Log: " + Joiner.on("; ").skipNulls().join(ch.racic.trp.testng.Reporter.getOutput(ires)));
                      log.info("Steps:");

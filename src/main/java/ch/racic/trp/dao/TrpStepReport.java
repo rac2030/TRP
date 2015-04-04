@@ -35,4 +35,10 @@ public class TrpStepReport extends AbstractReportElement implements ITestReportE
     public ITestReportEntry getCurrentActiveStep() {
         return isInProgress() ? this : null;
     }
+
+    protected void cleanupAfterWriteout() {
+        super.cleanupAfterWriteout();
+        response = null;
+
+    }
 }

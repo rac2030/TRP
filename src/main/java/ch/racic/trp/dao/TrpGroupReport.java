@@ -45,6 +45,11 @@ public class TrpGroupReport extends AbstractReportElement implements ITestReport
         return null;
     }
 
+    protected void cleanupAfterWriteout() {
+        super.cleanupAfterWriteout();
+        entries = null;
+    }
+
     public synchronized ITestReportEntry getCurrentActiveStep() {
         if (!isInProgress()) {
             // We reached a dead end as this node is not anymore in progress

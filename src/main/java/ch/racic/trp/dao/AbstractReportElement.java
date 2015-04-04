@@ -4,16 +4,20 @@
 
 package ch.racic.trp.dao;
 
+import ch.racic.trp.testng.listener.TrpTestListener;
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.IClass;
-import org.testng.ISuite;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
 
@@ -51,6 +55,8 @@ public abstract class AbstractReportElement implements ITestReportEntry {
     private String expectedExceptionMessageRegex;
     @XStreamAsAttribute
     private String uid;
+    @XStreamAsAttribute
+    private File resultXml;
 
     public AbstractReportElement(String name) {
         this.name = name;
@@ -59,6 +65,15 @@ public abstract class AbstractReportElement implements ITestReportEntry {
     public AbstractReportElement(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    protected void cleanupAfterWriteout() {
+        description = null;
+        testLog = null;
+        throwable = null;
+        expectedExceptions = null;
+        expectedExceptionMessageRegex = null;
+
     }
 
     public String getDescription() {
@@ -101,6 +116,7 @@ public abstract class AbstractReportElement implements ITestReportEntry {
 
     public ITestReportEntry start() {
         setStartTime(new Date().getTime());
+
         return setInProgress(true);
     }
 
@@ -146,8 +162,46 @@ public abstract class AbstractReportElement implements ITestReportEntry {
                 setStatus("SUCCESS");
             }
         }
-
+        try {
+            persistReport(result);
+        } catch (IOException e) {
+            //TODO what should we do in case of exception during save?
+            e.printStackTrace();
+        }
         return setInProgress(false);
+    }
+
+    private void persistReport(ITestResult result) throws IOException {
+        // TODO result can be null, what to do in this case? output location needs to be saved to start of step/group somehow
+        if (result == null) {
+            //TODO does not make sense, better have it all in 1 for a test //result = Reporter.getCurrentTestResult();
+            return;
+        }
+        // Get test method root folder
+        File tmRoot = (File) result.getAttribute(TrpTestListener.TEST_METHOD_OUTPUT_LOCATION_KEY);
+        // generate xml file name
+        /** make step report name same as folder name or?
+         Integer stepNumber = (Integer) result.getAttribute(TrpTestListener.TEST_METHOD_STEP_COUNTER_KEY);
+         String stepNumberStr = String.format("%04d", ++stepNumber);
+         File tmXml = new File(tmRoot, stepNumberStr + "-" + getName() + ".xml");
+         **/
+        resultXml = new File(tmRoot, "Result-" + tmRoot.getName() + ".xml");
+        result.getTestContext().getOutputDirectory();  //TODO calculate relative path
+
+        // write out to file
+        XStream stream = new XStream();
+        stream.autodetectAnnotations(true);
+        FileOutputStream outStream = null;
+        try {
+            outStream = FileUtils.openOutputStream(resultXml);
+            stream.toXML(this, outStream);
+
+            setWrittenToFile(true);
+            cleanupAfterWriteout();
+        } finally {
+            outStream.close();
+        }
+
     }
 
     public String getTestLog() {
@@ -251,13 +305,6 @@ public abstract class AbstractReportElement implements ITestReportEntry {
         String name = iTestResult.getName();
         String testName = iTestResult.getTestName();
         IClass testClass = iTestResult.getTestClass();
-        String suiteName = null;
-        ISuite suite = iTestResult.getTestContext().getSuite();
-        if (suite != null) {
-            suiteName = suite.getName();
-        }
-
-        log.debug("Suite = " + suiteName);
 
         log.debug(host + instance + attributeNames + parameters + name + testName + testClass);
 
@@ -267,5 +314,13 @@ public abstract class AbstractReportElement implements ITestReportEntry {
         setThreadId(method.getId());
 
         return this;
+    }
+
+    public File getResultXml() {
+        return resultXml;
+    }
+
+    public void setResultXml(File resultXml) {
+        this.resultXml = resultXml;
     }
 }
